@@ -30,8 +30,11 @@ public struct CloudFoundryDeploymentTracker {
   public init(repositoryURL: String, codeVersion: String? = nil) {
     self.repositoryURL = repositoryURL
     self.codeVersion = codeVersion
+    println("XXX")
     let configMgr = ConfigurationManager()
+    println("YYY")
     configMgr.load(.environmentVariables)
+    println("ZZZ")
   }
 
   public init(configMgr: ConfigurationManager, repositoryURL: String, codeVersion: String? = nil) {
@@ -57,7 +60,7 @@ public struct CloudFoundryDeploymentTracker {
 
       let req = HTTP.request(requestOptions) { response in
         if let response = response, response.statusCode == HTTPStatusCode.OK || response.statusCode == HTTPStatusCode.created {
-          Log.info("Uploaded stats \(response.status)")
+          println("Uploaded stats \(response.status)")
           do {
             var body = Data()
             try response.readAllData(into: &body)
@@ -67,12 +70,12 @@ public struct CloudFoundryDeploymentTracker {
             Log.error("Bad JSON doc received from deployment tracker.")
           }
         } else {
-          Log.error("Failed to send tracking data with status code: \(String(describing: response?.status))")
+          println("Failed to send tracking data with status code: \(String(describing: response?.status))")
         }
       }
       req.end(jsonData)
     } else {
-      Log.error("Failed to build valid JSON payload for deployment tracker... maybe running locally and not on the cloud?")
+      println("Failed to build valid JSON payload for deployment tracker... maybe running locally and not on the cloud?")
       return
     }
   }
