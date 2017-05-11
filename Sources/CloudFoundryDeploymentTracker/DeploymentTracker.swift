@@ -72,7 +72,7 @@ public struct CloudFoundryDeploymentTracker {
       }
       req.end(jsonData)
     } else {
-      Log.verbose("Failed to build valid JSON payload for deployment tracker... maybe running locally and not on the cloud?")
+      Log.error("Failed to build valid JSON payload for deployment tracker... maybe running locally and not on the cloud?")
       return
     }
   }
@@ -85,7 +85,7 @@ public struct CloudFoundryDeploymentTracker {
   public func buildTrackerJson(configMgr: ConfigurationManager) -> [String:Any]? {
       var jsonEvent: [String:Any] = [:]
       guard let vcapApplication = configMgr.getApp() else {
-        Log.verbose("Couldn't get Cloud Foundry App instance... maybe running locally and not on the cloud?")
+        Log.error("Couldn't get Cloud Foundry App instance... maybe running locally and not on the cloud?")
         return nil
       }
 
